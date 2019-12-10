@@ -54,7 +54,12 @@ BEGIN { #{{{1
 	} # else usage: awk -f JSON.awk file1 [file2...]
 
 	# set file slurping mode
-	srand(); RS="n/o/m/a/t/c/h" rand()
+	os_name=get_os_name()
+	if (os_name == "Darwin" || os_name == "FreeBSD") {
+		srand(); RS="\b" rand()
+	} else {
+		srand(); RS="s/o/m/a/t/c/h" rand()
+        }
 }
 
 { # main loop: process each file in turn {{{1
@@ -79,6 +84,10 @@ function bit_on(n, b) { #{{{1
 # Return n & (1 << b) for b>0 n>=0 - for awk portability
 	if (b == 0) return n % 2
 	return int(n / 2^b) % 2
+}
+
+function get_os_name() {
+	return system("uname")
 }
 
 function append_jpath_component(jpath, component) { #{{{1
