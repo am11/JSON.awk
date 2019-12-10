@@ -1,0 +1,10 @@
+language: generic
+
+jobs:
+  include:
+    - os: linux
+    - os: osx
+
+script: |
+    curl -sLO https://raw.githubusercontent.com/dotnet/toolset/master/TestAssets/InstallationScriptTests/InstallationScriptTests.json
+    awk -f JSON.awk InstallationScriptTests.json
